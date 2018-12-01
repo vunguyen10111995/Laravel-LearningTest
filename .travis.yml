@@ -1,0 +1,19 @@
+language: php
+
+php:
+  - 5.6
+
+before_script:
+  - cp .env.travis .env
+  - mysql -e 'create database homestead_test;'
+  - composer install --no-interaction
+  - php artisan key:generate
+  - php artisan migrate
+script:
+  - vendor/bin/phpunit
+deploy:
+  provider: heroku
+  api_key: bba8a1ee-3957-4899-8729-43c36e37217e
+  app: Laravel-LearningTest
+  run:
+    - php artisan migrate --force
